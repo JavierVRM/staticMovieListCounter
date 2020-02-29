@@ -1,14 +1,15 @@
 * {
     margin: 0;
     padding: 0;
-    color: rgb(34, 34, 34)
+    color: #abc;
 }
 
 body, html {
     height: 100%;
-    background: rgb(136,160,168);
-  
-  }
+    background: #14181c;
+    width: 100%;
+    font-family: Sans-Serif;
+}
 
 .outer__container {
     width: 100%;
@@ -17,27 +18,29 @@ body, html {
 }
 
 .inner__container {
-    width: 700px;
+    width: 900px;
     margin: 0 auto;
-}
-.content {
-    display: flex;
-    width: 100%;
 }
 
 .content__width__50 {
-    width: 50%;
+    width: 400px;
     padding: 20px;
 }
 
-.content__left__title {
-    text-align: center;
-    width: 100%;
+.content__left{
+    position: fixed;
+    float: left;
+}
+
+.content__right {
+    float: right;
 }
 
 #newList {
-    width: 100%;
+    width: 300px;
     height: 350px;
+    padding: 5px;
+    border-radius: 3px;
 }
 
 #sendList {
@@ -50,4 +53,26 @@ body, html {
 
 ul {
     list-style: none;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+li {
+    padding: 5px 3px;
+}
+
+li:nth-child(2n) {
+    background: rgba(255,255,255,0.1);
+}
+
+textarea {
+    background: rgba(255,255,255,0.1);
+}
+
+button {
+    font-weight: bold;
+    border-radius: 3px;
+    background: #00b020;
+    border: 1px solid #00b020;
+    color: #F4FCF0;
 }
