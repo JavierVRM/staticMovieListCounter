@@ -77,7 +77,7 @@ function totalListPrinter () {
 
     for (res of totalRes) {
         let listItem = document.createElement('li')
-        let listText = document.createTextNode(`${res.title} - ${res.value}`)
+        let listText = document.createTextNode(`${res.title}: ${res.value}`)
         listItem.appendChild(listText)
         listFather.appendChild(listItem)
     }
