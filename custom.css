@@ -3,11 +3,16 @@
     padding: 0;
     color: rgb(34, 34, 34)
 }
+
+body, html {
+    height: 100%;
+    background: rgb(136,160,168);
+  
+  }
+
 .outer__container {
     width: 100%;
-    background: rgb(136,160,168);
-    background: linear-gradient(0deg, rgba(136,160,168,1) 0%, rgba(187,197,206,1) 100%);
-    height: 100vh;
+ 
     padding: 50px ;
 }
 
