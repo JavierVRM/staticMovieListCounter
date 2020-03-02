@@ -15,9 +15,13 @@
                 <div class="content__left content__width__50">
                     <textarea name="" id="newList" cols="" rows="25" placeholder="Pega la lista..."></textarea>
                     <br>
-                    <button id="sendList" onclick="getVal()">Click Me, Biatch</button>
+                    <button id="sendList" onclick="manageResponse()">Click Me, Biatch</button>
                 </div>
                 <div class="content__right content__width__50">
+                    <div id="content__buttons">
+                        <button class="button-sorter" id="sort-byname" onclick="sortCriteria(event)">By Name</button>
+                        <button class="button-sorter" id="sort-bypoints" onclick="sortCriteria(event)">By Points</button>
+                    </div>
                     <ul id="responseList">
 
                     </ul>
