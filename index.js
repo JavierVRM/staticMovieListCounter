@@ -6,7 +6,6 @@ let assemblerFlag = false;
 let assemblerData;
 let sortBy = 'points';
 
-
 // Funcion General que maneja el funcionamiento de la 'aplicación'
 function manageResponse () {
     // Identificamos el input donde entrarán las nuevas listas 
@@ -29,17 +28,21 @@ function manageResponse () {
         finalList = finalList.flat()
         // 4) Llamamos a la función 'finalListPrinter'
         finalListPrinter();
-
     // Si la longitud de su valor es menor que 1 (es una lista vacía o con un espacio/caracter), retornamos:
     } else {
         return
     }
 }
 
+function removeBorder (cell) {
+    cell.style.border = '1px solid white'
+}
 // 1) Funcion que controla el seteo de la nueva lista
 function newListSetter (newListToArray) {
     // Limpiamos la lista de títulos vacíos y nulos
     newListToArray = newListToArray.filter(element => element)
+    // Limpiamos la lista de posibles elementos repetidos
+    newListToArray = [...new Set(newListToArray)]
     // Recorremos todos los títulos de la nueva lista
     for (let i = 0; i < newListToArray.length; i++) {
         // 1.1) Llamamos a la función 'newListCleaner' pasándole el título pertinente. Almacenamos su respuesta
@@ -111,14 +114,16 @@ function finalListSetter () {
 
 // Función que determina el criterio del orden de la lista final
 function sortCriteria(e) {
-    
+    // Asociamos a la variable global 'sortBy' un valor, en función del botón pulsado
     if (e.target.id === 'sort-bypoints') {
         sortBy = 'points'
     }
     if (e.target.id === 'sort-byname') {
         sortBy = 'name'
     }
+    // 3) Llamamos a la función 'finalListSorter'
     finalListSorter()
+    // 4) Llamamos a la función 'finalListPrinter'
     finalListPrinter()
 }
 
@@ -126,6 +131,7 @@ function sortCriteria(e) {
 function finalListSorter() {
     let byPoints = document.getElementById("sort-bypoints")
     let byName = document.getElementById("sort-byname")
+    // Editamos la estética de los botones y ordenamos la lista en función de lo que nos dicte la variable global 'sortBy' (definida en 'sortCriteria')
     if (sortBy === 'points') {
         byName.classList.remove('active')
         finalList.sort((a, b) => b.value - a.value)
@@ -170,8 +176,6 @@ function finalListPrinter () {
 function assembler (e) {
     // Identificamos el elemento clickado
     let target = e.target
-    // Le añadimos un estilo
-    target.style.color = 'red'
     // Almacenamos sus datos (título y valor)
     let targetTitle = target.firstChild.data
     let targetValue = target.lastChild.data
@@ -182,31 +186,43 @@ function assembler (e) {
         // El valor de la variable global assemblerData será el del (primer) elemento clickado
         assemblerData = {
             title: targetTitle,
-            value: targetValue
+            value: targetValue,
+            target: target
         }
+        target.style.color = '#00b020'
         // Pasamos el flag a true. Esta parte del flag sirve para identifar cuándo clickamos por primera vez en un elemento, o por segunda.
         assemblerFlag = true;
     // Si la variable global 'assemblerFlag' es true (si es el segundo elemento sobre el que pinchamos):
     } else {
         // Controlamos que no se haya clickeado 2 veces sobre el mismo elemento
         if (assemblerData.title !== targetTitle) {
-            // Añadimos la clave 'alternativeTitle', que inicializamos como un array vaío
-            assemblerData.alternativeTitle = []
-            // Añadimos a los títulos alternativos del primer elemento clickado el título del segundo elemento clickado
-            assemblerData.alternativeTitle.push(targetTitle)
-            // Pasamos los valor de ambos elementos a números
-            assemblerData.value = Number(assemblerData.value)
-            targetValue = Number(targetValue)
-            // Los sumamos
-            assemblerData.value += targetValue
-            // 4.1.1) Llamamos a la función 'assembleTofinalList' pasándole los datos de los elementos montados (assemblerData)
-            assembleTofinalList(assemblerData)
-            // 4.1.2) Llamamos a la función 'removeAssembledElement' pasándole el título del elemento clickado en segundo lugar (targetTitle)
-            removeAssembledElement(targetTitle)
-
-            finalListSorter()
-
-            finalListPrinter()
+            let message = `Estás seguro de querer fusionar '${assemblerData.title}' con '${targetTitle}'??. Recuerda que el título a conservar será '${assemblerData.title}'`
+            let confirmation = window.confirm(message)
+            // Controlamos que el usuario nos confirme la acción
+            if (confirmation) {
+                // Añadimos la clave 'alternativeTitle', que inicializamos como un array vaío
+                assemblerData.alternativeTitle = []
+                // Añadimos a los títulos alternativos del primer elemento clickado el título del segundo elemento clickado
+                assemblerData.alternativeTitle.push(targetTitle)
+                // Pasamos los valor de ambos elementos a números
+                assemblerData.value = Number(assemblerData.value)
+                targetValue = Number(targetValue)
+                // Los sumamos
+                assemblerData.value += targetValue
+                // 4.1.1) Llamamos a la función 'assembleTofinalList' pasándole los datos de los elementos montados (assemblerData)
+                assembleTofinalList(assemblerData)
+                // 4.1.2) Llamamos a la función 'removeAssembledElement' pasándole el título del elemento clickado en segundo lugar (targetTitle)
+                removeAssembledElement(targetTitle)
+                // 3) Llamamos a la función 'finalListSorter'
+                finalListSorter()
+                // 4) Llamamos a la función 'finalListPrinter'
+                finalListPrinter()
+            // Si el usuario cancela, dejamos todo como estaba.
+            } else {
+                assemblerData.target.style.color = "#abc"
+                assemblerFlag = false;
+            }
+            
         // Si hemos clickeado dos veces sobre el mismo elemento, le devolvemos su color original
         } else {
             target.style.color = '#abc'
@@ -214,8 +230,9 @@ function assembler (e) {
         // Pasamos el flag a false.
         assemblerFlag = false;
     }
-    console.warn(finalList)
+
 }
+
 
 // 4.1.1 Función que gestiona la asociación de los datos de los elementos montados con el elemento original
 function assembleTofinalList (data) {
@@ -235,7 +252,7 @@ function assembleTofinalList (data) {
     }
 }
 
-// 4.1.2 Función que elimina el elemento que le hemos pasado
+// 4.1.2 Función que elimina de la lista final el elemento pasado
 function removeAssembledElement (title) {
     // Filtramos la lista final por el título. Nos quedamos con los elementos que no coincidan con el que hemos pasado
     finalList = finalList.filter(finalElement => finalElement.title !== title)

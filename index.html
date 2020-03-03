@@ -10,12 +10,25 @@
 <body>
     <div class="outer__container">
         <div class="inner__container">
-            <div class="navbar"></div>
+            <div class="indications">
+                <h3 id="top-pag-ref">
+                    Añade la lista en el input de la izquierda y pulsa 'Click Me, Biatch'.  
+                </h3>
+                <h3>
+                    Los elementos de la lista final aparecerán en la parte de la derecha de la pantalla, con sus correspondientes valores.
+                </h3>
+                <h5>
+                    Para fusionar elementos, pincha primero en el que quieras que conserve el nombre. Recuerda que los elementos fusionados quedan guardados y no será necesario fusionarlos una segunda vez.
+                </h5>
+            </div>
             <div class="content">
-                <div class="content__left content__width__50">
+                <div class="content__left content__width__33">
                     <textarea name="" id="newList" cols="" rows="25" placeholder="Pega la lista..."></textarea>
                     <br>
                     <button id="sendList" onclick="manageResponse()">Click Me, Biatch</button>
+                    <a id="up-href" href="#">
+                        <button id="up"> Up!</button>
+                    </a> 
                 </div>
                 <div class="content__right content__width__50">
                     <div id="content__buttons">
